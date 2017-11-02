@@ -15,10 +15,12 @@ ri.DepthOfField(12,0.100,4)
 
 def Cup(posX, posY, posZ, rotX, rotY, rotZ) :
     ri.TransformBegin()
-    ri.Translate(posX,posY,posZ)
+    
     ri.Rotate(rotX,1,0,0)
     ri.Rotate(rotY,0,1,0)
     ri.Rotate(rotZ,0,0,1)
+
+    ri.Translate(posX,posY,posZ)
 
     ri.TransformBegin()
     ri.Translate(0,0,0)
@@ -26,19 +28,19 @@ def Cup(posX, posY, posZ, rotX, rotY, rotZ) :
     ri.Paraboloid(0.65,0.8,1.8,360)
     ri.TransformEnd()
 
-    #ri.TransformBegin()
-    #ri.Translate(0,0,1.78)
-    #ri.Scale(1,1,4)
-    #ri.Sphere(0.65,0,0.1,360)
-    #ri.TransformEnd()
-    #ri.TransformBegin()
-    #ri.Translate(-0.025,0,1)
-    #ri.Rotate(90,1,0,0)
-    #ri.Rotate(45,0,0,1)
-    #ri.Rotate(90,0,0,1)
-    #ri.Scale(1,1,2)
-    #ri.Torus(0.8,0.1,360,0,105)
-    #ri.TransformEnd()
+    ri.TransformBegin()
+    ri.Translate(0,0,1.78)
+    ri.Scale(1,1,4)
+    ri.Sphere(0.65,0,0.1,360)
+    ri.TransformEnd()
+    ri.TransformBegin()
+    ri.Translate(-0.025,0,1)
+    ri.Rotate(90,1,0,0)
+    ri.Rotate(45,0,0,1)
+    ri.Rotate(90,0,0,1)
+    ri.Scale(1,1,2)
+    ri.Torus(0.8,0.1,360,0,105)
+    ri.TransformEnd()
     ri.TransformEnd()
 
 
