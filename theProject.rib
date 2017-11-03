@@ -1,42 +1,77 @@
 ##RenderMan RIB
 version 3.04
 Display "theProject" "it" "rgb" 
-Format 640 480 0.9
+Format 1024 720 1
 Projection "perspective" "fov" [45]
 Integrator "PxrPathTracer" "Integrator" 
 DepthOfField 12 0.1 4
 WorldBegin 
+Translate 0 0 5.75
 AttributeBegin 
 Rotate 90 1 0 0
 Light "PxrDomeLight" "holyLight" "float exposure" [0] "string lightColorMap" ["hdrTest.tx"]
 AttributeEnd 
+Rotate -12 1 0 0
+TransformBegin 
+Rotate -90 1 0 0
+Rotate 0 0 1 0
+Rotate -15 0 0 1
+Translate -0.8 0 0
+TransformBegin 
 AttributeBegin 
 Pattern "PxrVoronoise" "noiseTexture" "float jitter" [0.5] "float smoothness" [0] "float frequency" [5]
 Pattern "testShader" "testit" "float pos" [0.5] "color Cin" [1 1 1] "float width" [0.1]
-Bxdf "PxrDisney" "test1" "float clearcoat" [0.35] "reference color baseColor" ["testit:Cout"] "reference float metallic" ["testit:inStripe"] "float specular" [0.75]
+Bxdf "PxrDisney" "cupTex" "float clearcoat" [0.35] "reference color baseColor" ["testit:Cout"] "reference float metallic" ["testit:inStripe"] "float specular" [0.75]
 TransformBegin 
-Rotate 0 1 0 0
-Rotate 0 0 1 0
-Rotate 0 0 0 1
-Translate 0.25 0 -0.25
-TransformBegin 
-Translate 0 0 0
+Translate 0 0 -2.75
 Scale 1 1 2
 Paraboloid 0.65 0.8 1.8 360 
 TransformEnd 
 TransformBegin 
-Translate 0 0 1.78
+Translate 0 0 0.85
 Scale 1 1 4
 Sphere 0.65 0 0.1 360 
 TransformEnd 
 TransformBegin 
-Translate -0.025 0 1
+Translate -0.025 0 0
 Rotate 90 1 0 0
 Rotate 45 0 0 1
-Rotate 90 0 0 1
+Rotate 85 0 0 1
 Scale 1 1 2
-Torus 0.8 0.1 360 0 105 
-TransformEnd 
+Torus 0.8 0.1 360 0 110 
 TransformEnd 
 AttributeEnd 
+TransformEnd 
+TransformEnd 
+TransformBegin 
+Rotate -90 1 0 0
+Rotate 0 0 1 0
+Rotate 0 0 0 1
+Translate 0.6 0 -1
+Scale 0.75 0.75 0.75
+TransformBegin 
+AttributeBegin 
+Bxdf "PxrDisney" "baseDonut" "color baseColor" [0.6 0.3 0.1]
+TransformBegin 
+Torus 0.8 0.3 360 0 360 
+TransformEnd 
+AttributeEnd 
+AttributeBegin 
+Pattern "PxrVoronoise" "noiseTexture" "float jitter" [0.5] "float smoothness" [0.4] "float frequency" [8]
+Bxdf "PxrDisney" "chocDonut" "reference float metallic" ["noiseTexture:resultF"] "float specular" [0.2] "float anisotropic" [1] "color baseColor" [0.225 0.075 0.025] "float metallic" [1] "float clearcoat" [0.2]
+TransformBegin 
+Torus 0.805 0.305 180 0 360 
+TransformEnd 
+AttributeEnd 
+TransformEnd 
+TransformEnd 
+Bxdf "PxrDisney" "table" "float anisotropic" [0.5] "color baseColor" [0 0 0] "float metallic" [1] "float clearcoat" [0.95] "float specular" [1]
+TransformBegin 
+Translate 0 -1.19 0
+Rotate 0 1 0 0
+Rotate 0 0 1 0
+Rotate 0 0 0 1
+Scale 3 3 3
+Patch "bilinear" "P" [5 0 -5 5 0 5 -5 0 -5 -5 0 5]
+TransformEnd 
 WorldEnd 
