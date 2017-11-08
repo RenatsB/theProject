@@ -1,0 +1,1 @@
+"C:\Program Files\Pixar\RenderManProServer-21.5\bin\txmake.exe" textureHDR.jpg hdrTex.tx

@@ -1,0 +1,1 @@
+"%RMANTREE%\bin\oslc.exe" testShader.osl

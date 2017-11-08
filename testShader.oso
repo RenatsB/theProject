@@ -15,19 +15,19 @@ temp	float	$tmp1	%read{1,1} %write{0,0}
 temp	float	$tmp2	%read{5,5} %write{3,3}
 temp	float	$tmp3	%read{5,5} %write{4,4}
 code ___main___
-# testShader.osl:3
-# 	float dist=abs(v-pos);
-	sub		$tmp1 v pos 	%filename{"testShader.osl"} %line{3} %argrw{"wrr"}
-	abs		dist $tmp1 	%argrw{"wr"}
-# testShader.osl:4
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\testShader.osl:4
 # 	float fuzz=u-v;
-	sub		fuzz u v 	%line{4} %argrw{"wrr"}
-# testShader.osl:6
-# 	inStripe=smoothstep(width-fuzz,width+fuzz,dist);
-	sub		$tmp2 width fuzz 	%line{6} %argrw{"wrr"}
+	sub		$tmp1 v pos 	%filename{"C:\\Users\\rbikm\\Desktop\\theProject-master\\testShader.osl"} %line{4} %argrw{"wrr"}
+	abs		dist $tmp1 	%argrw{"wr"}
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\testShader.osl:5
+# 	//u-v
+	sub		fuzz u v 	%line{5} %argrw{"wrr"}
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\testShader.osl:7
+# 	Cout=inStripe*Cin;
+	sub		$tmp2 width fuzz 	%line{7} %argrw{"wrr"}
 	add		$tmp3 width fuzz 	%argrw{"wrr"}
 	smoothstep	inStripe $tmp2 $tmp3 dist 	%argrw{"wrrr"}
-# testShader.osl:7
-# 	Cout=inStripe*Cin;
-	mul		Cout inStripe Cin 	%line{7} %argrw{"wrr"}
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\testShader.osl:8
+# }
+	mul		Cout inStripe Cin 	%line{8} %argrw{"wrr"}
 	end
