@@ -1,0 +1,64 @@
+##RenderMan RIB
+version 3.04
+Display "theProject" "it" "rgb" 
+Format 720 512 1
+Projection "perspective" "fov" [45]
+Integrator "PxrPathTracer" "Integrator" 
+DepthOfField 36 0.1 3
+WorldBegin 
+Translate 0 0 7
+AttributeBegin 
+Rotate -90 1 0 0
+Light "PxrDomeLight" "holyLight" "float exposure" [0] "string lightColorMap" ["hdrTex.tx"]
+AttributeEnd 
+Rotate -45 1 0 0
+Rotate 60 0 1 0
+TransformBegin 
+Translate 0 0 0
+AttributeBegin 
+GeneralPolygon [7] "vertex point P" [-0.5 0.2 1.5 0.5 0.2 1.5 0.5 0.2 -1.5
+0.25 0.2 -1.42 0 0.2 -1.385 -0.25 0.2 -1.42 -0.5 0.2 -1.5]
+GeneralPolygon [7] "vertex point P" [0.5 -0.2 1.5 0.5 0.2 1.5 0.5 0.2 -1.5
+0.5 0.075 -2 0.5 0 -2.5 0.5 -0.2 -2.5 0.5 -0.2 1.5]
+GeneralPolygon [7] "vertex point P" [-0.5 -0.2 1.5 -0.5 0.2 1.5 -0.5 0.2 -1.5
+-0.5 0.075 -2 -0.5 0 -2.5 -0.5 -0.2 -2.5 -0.5 -0.2 1.5]
+GeneralPolygon [14] "vertex point P" [-0.5 -0.2 1.5 0.5 -0.2 1.5
+0.5 -0.2 -2.5 0.4 -0.2 -2.5 0.36 -0.2 -2.34 0.28 -0.2 -2.22
+0.16 -0.2 -2.14 0 -0.2 -2.1 -0.16 -0.2 -2.14 -0.28 -0.2 -2.22
+-0.36 -0.2 -2.34 -0.4 -0.2 -2.5 -0.5 -0.2 -2.5 -0.5 -0.2 1.5]
+GeneralPolygon [18] "vertex point P" [0.5 -0.2 -2.5 0.4 -0.2 -2.5
+0.36 -0.2 -2.66 0.28 -0.2 -2.78 0.16 -0.2 -2.86 0 -0.2 -2.9
+-0.16 -0.2 -2.86 -0.28 -0.2 -2.78 -0.36 -0.2 -2.66 -0.4 -0.2 -2.5
+-0.5 -0.2 -2.5 -0.45 -0.2 -2.7 -0.35 -0.2 -2.85 -0.2 -0.2 -2.95
+0 -0.2 -3 0.2 -0.2 -2.95 0.35 -0.2 -2.85 0.45 -0.2 -2.7]
+GeneralPolygon [18] "vertex point P" [0.5 0 -2.5 0.4 0 -2.5
+0.36 0 -2.66 0.28 0 -2.78 0.16 0 -2.86 0 0 -2.9
+-0.16 0 -2.86 -0.28 0 -2.78 -0.36 0 -2.66 -0.4 0 -2.5
+-0.5 0 -2.5 -0.45 0 -2.7 -0.35 0 -2.85 -0.2 0 -2.95
+0 0 -3 0.2 0 -2.95 0.35 0 -2.85 0.45 0 -2.7]
+GeneralPolygon [19] "vertex point P" [-0.5 0 -2.5 -0.45 0 -2.7 -0.35 0 -2.85
+-0.2 0 -2.95 0 0 -3 0.2 0 -2.95 0.35 0 -2.85
+0.45 0 -2.7 0.5 0 -2.5 0.5 -0.2 -2.5 0.45 -0.2 -2.7
+0.35 -0.2 -2.85 0.2 -0.2 -2.95 0 -0.2 -3 -0.2 -0.2 -2.95
+-0.35 -0.2 -2.85 -0.45 -0.2 -2.7 -0.5 -0.2 -2.5 -0.5 0 -2.5]
+AttributeEnd 
+AttributeBegin 
+GeneralPolygon [10] "vertex point P" [0.5 0.2 -1.5 0.25 0.2 -1.42
+0 0.2 -1.385 -0.25 0.2 -1.42 -0.5 0.2 -1.5 -0.5 0.075 -2
+-0.25 0.075 -1.92 0 0.075 -1.885 0.25 0.075 -1.92 0.5 0.075 -2]
+GeneralPolygon [16] "vertex point P" [-0.5 0.075 -2 -0.25 0.075 -1.92 0 0.075 -1.885 0.25 0.075 -1.92
+0.5 0.075 -2 0.5 0 -2.5 0.4 0 -2.5 0.36 0 -2.34
+0.28 0 -2.22 0.16 0 -2.14 0 0 -2.1 -0.16 0 -2.14
+-0.28 0 -2.22 -0.36 0 -2.34 -0.4 0 -2.5 -0.5 0 -2.5]
+AttributeEnd 
+TransformEnd 
+Bxdf "PxrDisney" "table" "float anisotropic" [0.5] "color baseColor" [1 1 1] "float metallic" [0.8] "float clearcoat" [0.95] "float specular" [1]
+TransformBegin 
+Translate 0 -1.19 0
+Rotate 0 1 0 0
+Rotate 0 0 1 0
+Rotate 0 0 0 1
+Scale 3 3 3
+Patch "bilinear" "P" [5 0 -5 5 0 5 -5 0 -5 -5 0 5]
+TransformEnd 
+WorldEnd 
