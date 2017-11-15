@@ -10,5 +10,4 @@
 |Find a decent HDR texture for bg or find a better bg angle|Copper contacts(barely seen)|
 |Add a tiny watermark|Parametric geometry controls|
 |Add RIB commenting via python prman|Background bound to camera rotation|
-||Final view angle adjusted|
-||Fixed curved slope geometry issues|
+|Fix curved slope geometry issues|Final view angle adjusted|
