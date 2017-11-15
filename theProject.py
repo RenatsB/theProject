@@ -6,7 +6,7 @@ filename = "theProject.rib"
 ri.Begin(filename)
 
 ri.Display("theProject.tiff", "it", "rgb")
-ri.Format(1920,1080,1)
+ri.Format(720,480,1)
 ri.Projection("perspective", {"fov":[45]})
 ri.Integrator('PxrPathTracer', 'Integrator')
 ri.DepthOfField(36,0.1,3)
@@ -173,6 +173,40 @@ def MetalCurvedTop2Test() :
 	ri.GeneralPolygon ([len(points1)/3], {ri.P:points1})
 	ri.GeneralPolygon ([len(points2)/3], {ri.P:points2})
 
+def MetalFront() :
+	points=[0.5,0.2,1.5,
+	-0.5,0.2,1.5,
+	-0.5,-0.2,1.5,
+	0.5,-0.2,1.5,
+	
+	0.475,0.175,1.5,
+	-0.475,0.175,1.5,
+	-0.475,-0.175,1.5,
+	0.475,-0.175,1.5]
+	ri.GeneralPolygon ([4,4],{ri.P:points})
+
+def MetalInside(a,b) :
+	points1=[a,b,1.5,
+	a,b,1,
+	-a,b,1,
+	-a,b,1.5]
+	points2=[a,b,1.5,
+	a,b,1,
+	a,-b,1,
+	a,-b,1.5]
+	points3=[-a,b,1.5,
+	-a,b,1,
+	-a,-b,1,
+	-a,-b,1.5]
+	points4=[-a,-b,1.5,
+	a,-b,1.5,
+	a,-b,1,
+	-a,b,1]
+	ri.GeneralPolygon ([len(points1)/3], {ri.P:points1})
+	ri.GeneralPolygon ([len(points2)/3], {ri.P:points2})
+	ri.GeneralPolygon ([len(points3)/3], {ri.P:points3})
+	ri.GeneralPolygon ([len(points4)/3], {ri.P:points4})
+
 def MetalPart(posX, posY, posZ) :
 	ri.TransformBegin()
 	ri.Translate(posX,posY,posZ)
@@ -202,9 +236,54 @@ def MetalPart(posX, posY, posZ) :
 	ri.Translate(0,-2.5,0)
 	ri.Cylinder(0.4,0,0.2,360.0)
 	ri.TransformEnd()
+	MetalFront()
+	MetalInside(0.475,0.175)
 	ri.AttributeEnd()
 	ri.TransformEnd()
 	
+def PlasticBrick(xmin,ymin,zmin,xmax,ymax,zmax,col) :
+	ri.AttributeBegin()
+	ri.Bxdf("PxrDisney", "table",
+    {		
+            "color baseColor":[0,0,col],
+            "float metallic":[0.2],
+            "float specular":[1],
+            "float anisotropic":[0.5],
+            "float clearcoat":[0.95]
+    }
+    )
+	front=[xmin,ymin,zmax,
+	xmin,ymax,zmax,
+	xmax,ymax,zmax,
+	xmax,ymin,zmax]
+	sideL=[xmin,ymin,zmax,
+	xmin,ymax,zmax,
+	xmin,ymax,zmin,
+	xmin,ymin,zmin]
+	sideR=[xmax,ymin,zmax,
+	xmax,ymax,zmax,
+	xmax,ymax,zmin,
+	xmax,ymin,zmin]
+	top=[xmin,ymax,zmax,
+	xmin,ymax,zmin,
+	xmax,ymax,zmin,
+	xmax,ymax,zmax]
+	ri.GeneralPolygon ([len(front)/3], {ri.P:front})
+	ri.GeneralPolygon ([len(sideL)/3], {ri.P:sideL})
+	ri.GeneralPolygon ([len(sideR)/3], {ri.P:sideR})
+	ri.GeneralPolygon ([len(top)/3], {ri.P:top})
+	ri.AttributeEnd()
+
+def MetalContact(posx, posy, posz) :
+	ri.TransformBegin()
+	ri.Translate(posx,posy,posz)
+	points=[-0.025,0,1.5,
+	-0.025,0,1,
+	0.025,0,1,
+	0.025,0,1.5]
+	ri.GeneralPolygon ([len(points)/3], {ri.P:points})
+	ri.TransformEnd()
+
 
 def Table(posX, posY, posZ, rotX, rotY, rotZ, sc) :
     ri.Bxdf("PxrDisney", "table",
@@ -243,11 +322,29 @@ ri.Light("PxrDomeLight", "holyLight",
 ri.AttributeEnd()
 
 ri.Rotate(vertAngle,1,0,0)
-ri.Rotate(-135,0,1,0)
+ri.Rotate(-270,0,1,0)
 ri.TransformBegin()
 ri.Translate(0,-1,0)
 MetalPart(0,0,0)
+ri.AttributeBegin()
+ri.Bxdf("PxrDisney", "contact",
+    {		
+            "color baseColor":[1,1,0],
+            "float metallic":[0.8],
+            "float specular":[1],
+            "float anisotropic":[0.5],
+            "float clearcoat":[0.95]
+    }
+    )
+MetalContact(-0.32,0.05,-0.05)
+MetalContact(-0.1,0.05,-0.05)
+MetalContact(0.32,0.05,-0.05)
+MetalContact(0.1,0.05,-0.05)
+ri.AttributeEnd()
+PlasticBrick(-0.475,-0.175,1,0.475,-0.05,1.495,0)
+PlasticBrick(-0.42,-0.05,1,0.42,0.025,1.49,1)
 ri.TransformEnd()
+
 Table(0,-1.19,-1,0,45,0,3)
 
 #All the geometry goes here ^^^
