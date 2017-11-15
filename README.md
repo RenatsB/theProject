@@ -3,7 +3,7 @@
 "Offline rendering assignment"
 --
 |ToDo|Done|
-----
+|----|----|
 |Write noise displacement shader for curved slope|Main RIB structure via python prman|
 |Write scratch and dent shader for main body|Metal geometry|
 |Write text overlay shader|Plastic inner parts|
@@ -12,4 +12,3 @@
 |Add RIB commenting via python prman|Background bound to camera rotation|
 ||Final view angle adjusted|
 ||Fixed curved slope geometry issues|
----
