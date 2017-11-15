@@ -11,104 +11,142 @@ ri.Projection("perspective", {"fov":[45]})
 ri.Integrator('PxrPathTracer', 'Integrator')
 ri.DepthOfField(36,0.1,3)
 
+#variables used to position vertices
+#hX - half width
+hX = 0.6
+#hY - half height
+hY = 0.225
+#hZ - half length
+hZ = 2.25
+#cB - beginning of the curved slope(top left or right end)
+cB = 0.38
+#rT - ring thickness
+rT = 0.1
+#rB - beginning of the ring (side)
+rB = 1.75-rT
+#rEp - ring end plus
+rEp = (2*rB-hZ+rT)
+#rEm - ring end minus
+rEm = hZ-rT
+#rR - ring radius
+rR = hX-rT
+#inner ring values
+ringA=rR*(11.0/30.0)
+ringB=rR*(21.0/30.0)
+ringC=rR*(28.0/30.0)
+#outer ring values
+ringAo=hX*(11.0/30.0)
+ringBo=hX*(21.0/30.0)
+ringCo=hX*(28.0/30.0)
+#hPart - height partitioning value
+hPart = 2.25
+#metal thickness at the front
+metalThickness=0.045
+#width and height of inner geometry 
+hXt=hX-metalThickness
+hYt=hY-metalThickness
+
 def MetalTop() :
-	points=[-0.5,0.2,1.5,
-	0.5,0.2,1.5,
-	0.5,0.2,-1.5,
-	0.25,0.2,-1.42,
-	0,0.2,-1.385,
-	-0.25,0.2,-1.42,
-	-0.5,0.2,-1.5]
+	points=[-hX,hY,hZ,
+	hX,hY,hZ,
+	hX,hY,-cB,
+	hX/2,hY,-(cB-0.085),
+	0,hY,-(cB-0.125),
+	-hX/2,hY,-(cB-0.085),
+	-hX,hY,-cB]
 	ri.GeneralPolygon ([len(points)/3], {ri.P:points})
 
 def MetalSide(signF) :
-	val=signF*0.5
-	points=[val,-0.2,1.5,
-	val,0.2,1.5,
-	val,0.2,-1.5,
-	val,0.075,-2,
-	val,0,-2.5,
-	val,-0.2,-2.5,
-	val,-0.2,1.5]
+	val=signF*hX
+	points=[val,-hY,hZ,
+	val,hY,hZ,
+	val,hY,-cB,
+	val,hY/hPart,-(cB+0.5),
+	val,0,-rB,
+	val,-hY,-rB,
+	val,-hY,hZ]
 	ri.GeneralPolygon ([len(points)/3], {ri.P:points})
 
 def MetalBottom() :
-	points=[-0.5,-0.2,1.5,
-	0.5,-0.2,1.5,
-	0.5,-0.2,-2.5,
-	0.4,-0.2,-2.5,
-	0.36,-0.2,-2.34,
-	0.28,-0.2,-2.22,
-	0.16,-0.2,-2.14,
-	0,-0.2,-2.1,
-	-0.16,-0.2,-2.14,
-	-0.28,-0.2,-2.22,
-	-0.36,-0.2,-2.34,
-	-0.4,-0.2,-2.5,
-	-0.5,-0.2,-2.5,
-	-0.5,-0.2,1.5]
+	points=[-hX,-hY,hZ,
+	hX,-hY,hZ,
+	hX,-hY,-rB,
+	rR,-hY,-rB,
+	ringC,-hY,-(rB-ringA),
+	ringB,-hY,-(rB-ringB),
+	ringA,-hY,-(rB-ringC),
+	0,-hY,-rEp,
+	-ringA,-hY,-(rB-ringC),
+	-ringB,-hY,-(rB-ringB),
+	-ringC,-hY,-(rB-ringA),
+	-rR,-hY,-rB,
+	-hX,-hY,-rB,
+	-hX,-hY,hZ]
 	ri.GeneralPolygon ([len(points)/3], {ri.P:points})
 
 def MetalRingHoriz(signF) :
-	val=signF*0.2
-	points=[0.5,val,-2.5,
-	0.4,val,-2.5,
-	0.36,val,-2.66,
-	0.28,val,-2.78,
-	0.16,val,-2.86,
-	0,val,-2.9,
-	-0.16,val,-2.86,
-	-0.28,val,-2.78,
-	-0.36,val,-2.66,
-	-0.4,val,-2.5,
-	-0.5,val,-2.5,
-	-0.45,val,-2.7,
-	-0.35,val,-2.85,
-	-0.2,val,-2.95,
-	0,val,-3,
-	0.2,val,-2.95,
-	0.35,val,-2.85,
-	0.45,val,-2.7]
+	val=signF*hY
+	points=[hX,val,-rB,
+	rR,val,-rB,
+	ringC,val,-(rB+ringA),
+	ringB,val,-(rB+ringB),
+	ringA,val,-(rB+ringC),
+	0,val,-rEm,
+	-ringA,val,-(rB+ringC),
+	-ringB,val,-(rB+ringB),
+	-ringC,val,-(rB+ringA),
+	-rR,val,-rB,
+	-hX,val,-rB,
+	-ringCo,val,-(rB+ringAo),
+	-ringBo,val,-(rB+ringBo),
+	-ringAo,val,-(rB+ringCo),
+	0,val,-hZ,
+	ringAo,val,-(rB+ringCo),
+	ringBo,val,-(rB+ringBo),
+	ringCo,val,-(rB+ringAo)]
 	ri.GeneralPolygon ([len(points)/3], {ri.P:points})
 
 def MetalRingSideOuter() :
 	signA = 0.0
-	signB = -0.2
-	points1a=[-0.5,signA,-2.5,
-	-0.45,signA,-2.7,
-	-0.45,signB,-2.7,
-	-0.5,signB,-2.5]
-	points2a=[-0.45,signA,-2.7,
-	-0.35,signA,-2.85,	
-	-0.35,signB,-2.85,
-	-0.45,signB,-2.7]
-	points3a=[-0.35,signA,-2.85,
-	-0.2,signA,-2.95,
-	-0.2,signB,-2.95,
-	-0.35,signB,-2.85]
-	points4a=[-0.2,signA,-2.95,
-	0,signA,-3,
-	0,signB,-3,
-	-0.2,signB,-2.95]
+	signB = -hY
+	rAo = (rB+ringAo)
+	rBo = (rB+ringBo)
+	rCo = (rB+ringCo)
+	points1a=[-hX,signA,-rB,
+	-ringCo,signA,-rAo,
+	-ringCo,signB,-rAo,
+	-hX,signB,-rB]
+	points2a=[-ringCo,signA,-rAo,
+	-ringBo,signA,-rBo,	
+	-ringBo,signB,-rBo,
+	-ringCo,signB,-rAo]
+	points3a=[-ringBo,signA,-rBo,
+	-ringAo,signA,-rCo,
+	-ringAo,signB,-rCo,
+	-ringBo,signB,-rBo]
+	points4a=[-ringAo,signA,-rCo,
+	0,signA,-hZ,
+	0,signB,-hZ,
+	-ringAo,signB,-rCo]
 	#end of left side
-	signA = -0.2
+	signA = -hY
 	signB = 0.0
-	points1b=[0.5,signA,-2.5,
-	0.45,signA,-2.7,
-	0.45,signB,-2.7,
-	0.5,signB,-2.5]
-	points2b=[0.45,signA,-2.7,
-	0.35,signA,-2.85,	
-	0.35,signB,-2.85,
-	0.45,signB,-2.7]
-	points3b=[0.35,signA,-2.85,
-	0.2,signA,-2.95,
-	0.2,signB,-2.95,
-	0.35,signB,-2.85]
-	points4b=[0.2,signA,-2.95,
-	0,signA,-3,
-	0,signB,-3,
-	0.2,signB,-2.95]
+	points1b=[hX,signA,-rB,
+	ringCo,signA,-rAo,
+	ringCo,signB,-rAo,
+	hX,signB,-rB]
+	points2b=[ringCo,signA,-rAo,
+	ringBo,signA,-rBo,	
+	ringBo,signB,-rBo,
+	ringCo,signB,-rAo]
+	points3b=[ringBo,signA,-rBo,
+	ringAo,signA,-rCo,
+	ringAo,signB,-rCo,
+	ringBo,signB,-rBo]
+	points4b=[ringAo,signA,-rCo,
+	0,signA,-hZ,
+	0,signB,-hZ,
+	ringAo,signB,-rCo]
 	#end of right side
 	ri.GeneralPolygon ([len(points1a)/3], {ri.P:points1a})
 	ri.GeneralPolygon ([len(points2a)/3], {ri.P:points2a})
@@ -120,86 +158,64 @@ def MetalRingSideOuter() :
 	ri.GeneralPolygon ([len(points4b)/3], {ri.P:points4b})
 
 def MetalCurvedTop1() :
-	points=[0.5,0.2,-1.5,
-	0.25,0.2,-1.42,
-	0,0.2,-1.385,
-	-0.25,0.2,-1.42,
-	-0.5,0.2,-1.5,
-	-0.5,0.075,-2,
-	-0.25,0.075,-1.92,
-	0,0.075,-1.885,
-	0.25,0.075,-1.92,
-	0.5,0.075,-2]
+	points=[hX,hY,-cB,
+	hX/2,hY,-(cB-0.085),
+	0,hY,-(cB-0.125),
+	-hX/2,hY,-(cB-0.085),
+	-hX,hY,-cB,
+	-hX,hY/hPart,-(cB+0.5),
+	-hX/2,hY/hPart-0.01,-(cB+0.48),
+	0,hY/hPart-0.0125,-(cB+0.42),
+	hX/2,hY/hPart-0.01,-(cB+0.48),
+	hX,hY/hPart,-(cB+0.5)]
 	ri.GeneralPolygon ([len(points)/3], {ri.P:points})
 
 def MetalCurvedTop2() :
-	points=[-0.5,0.075,-2,
-	-0.25,0.075,-1.92,
-	0,0.075,-1.885,
-	0.25,0.075,-1.92,
-	0.5,0.075,-2,
-	0.5,0,-2.5,
-	0.4,0,-2.5,
-	0.36,0,-2.34,
-	0.28,0,-2.22,
-	0.16,0,-2.14,
-	0,0,-2.1,
-	-0.16,0,-2.14,
-	-0.28,0,-2.22,
-	-0.36,0,-2.34,
-	-0.4,0,-2.5,
-	-0.5,0,-2.5]
+	points=[-hX,hY/hPart,-(cB+0.5),
+	-hX/2,hY/hPart-0.01,-(cB+0.48),
+	0,hY/hPart-0.0125,-(cB+0.42),
+	hX/2,hY/hPart-0.01,-(cB+0.48),
+	hX,hY/hPart,-(cB+0.5),
+	hX,0,-rB,
+	rR,0,-rB,
+	ringC,0,-(rB-ringA),
+	ringB,0,-(rB-ringB),
+	ringA,0,-(rB-ringC),
+	0,0,-rEp,
+	-ringA,0,-(rB-ringC),
+	-ringB,0,-(rB-ringB),
+	-ringC,0,-(rB-ringA),
+	-rR,0,-rB,
+	-hX,0,-rB]
 	ri.GeneralPolygon ([len(points)/3], {ri.P:points})
 
-def MetalCurvedTop2Test() :
-	points1=[-0.5,0.075,-2,
-	-0.25,0.075,-1.92,
-	0,0.075,-1.885,
-	0,0,-2.1,
-	-0.16,0,-2.14,
-	-0.28,0,-2.22,
-	-0.36,0,-2.34,
-	-0.4,0,-2.5,
-	-0.5,0,-2.5]
-	points2=[0.5,0.075,-2,
-	0.25,0.075,-1.92,
-	0,0.075,-1.885,
-	0,0,-2.1,
-	0.16,0,-2.14,
-	0.28,0,-2.22,
-	0.36,0,-2.34,
-	0.4,0,-2.5,
-	0.5,0,-2.5]
-	ri.GeneralPolygon ([len(points1)/3], {ri.P:points1})
-	ri.GeneralPolygon ([len(points2)/3], {ri.P:points2})
-
 def MetalFront() :
-	points=[0.5,0.2,1.5,
-	-0.5,0.2,1.5,
-	-0.5,-0.2,1.5,
-	0.5,-0.2,1.5,
+	points=[hX,hY,hZ,
+	-hX,hY,hZ,
+	-hX,-hY,hZ,
+	hX,-hY,hZ,
 	
-	0.475,0.175,1.5,
-	-0.475,0.175,1.5,
-	-0.475,-0.175,1.5,
-	0.475,-0.175,1.5]
+	hXt,hYt,hZ,
+	-hXt,hYt,hZ,
+	-hXt,-hYt,hZ,
+	hXt,-hYt,hZ]
 	ri.GeneralPolygon ([4,4],{ri.P:points})
 
 def MetalInside(a,b) :
-	points1=[a,b,1.5,
+	points1=[a,b,hZ,
 	a,b,1,
 	-a,b,1,
-	-a,b,1.5]
-	points2=[a,b,1.5,
+	-a,b,hZ]
+	points2=[a,b,hZ,
 	a,b,1,
 	a,-b,1,
-	a,-b,1.5]
-	points3=[-a,b,1.5,
+	a,-b,hZ]
+	points3=[-a,b,hZ,
 	-a,b,1,
 	-a,-b,1,
-	-a,-b,1.5]
-	points4=[-a,-b,1.5,
-	a,-b,1.5,
+	-a,-b,hZ]
+	points4=[-a,-b,hZ,
+	a,-b,hZ,
 	a,-b,1,
 	-a,b,1]
 	ri.GeneralPolygon ([len(points1)/3], {ri.P:points1})
@@ -224,20 +240,20 @@ def MetalPart(posX, posY, posZ) :
 
 	MetalTop()
 	MetalSide(1.0)
-	MetalSide(-1)
+	MetalSide(-1.0)
 	MetalBottom()
 	MetalRingHoriz(-1.0)
 	MetalRingHoriz(0)
 	MetalRingSideOuter()
 	MetalCurvedTop1()
-	MetalCurvedTop2Test()
+	MetalCurvedTop2()
 	ri.TransformBegin()
 	ri.Rotate(90,1,0,0)
-	ri.Translate(0,-2.5,0)
-	ri.Cylinder(0.4,0,0.2,360.0)
+	ri.Translate(0,-rB,0)
+	ri.Cylinder(rR,0,hY,360.0)
 	ri.TransformEnd()
 	MetalFront()
-	MetalInside(0.475,0.175)
+	MetalInside(hXt,hYt)
 	ri.AttributeEnd()
 	ri.TransformEnd()
 	
@@ -246,10 +262,10 @@ def PlasticBrick(xmin,ymin,zmin,xmax,ymax,zmax,col) :
 	ri.Bxdf("PxrDisney", "table",
     {		
             "color baseColor":[0,0,col],
-            "float metallic":[0.2],
-            "float specular":[1],
-            "float anisotropic":[0.5],
-            "float clearcoat":[0.95]
+            "float metallic":[0.9],
+            "float specular":[0.9],
+            "float anisotropic":[0.1],
+            "float clearcoat":[0.5]
     }
     )
 	front=[xmin,ymin,zmax,
@@ -277,10 +293,10 @@ def PlasticBrick(xmin,ymin,zmin,xmax,ymax,zmax,col) :
 def MetalContact(posx, posy, posz) :
 	ri.TransformBegin()
 	ri.Translate(posx,posy,posz)
-	points=[-0.025,0,1.5,
+	points=[-0.025,0,hZ,
 	-0.025,0,1,
 	0.025,0,1,
-	0.025,0,1.5]
+	0.025,0,hZ]
 	ri.GeneralPolygon ([len(points)/3], {ri.P:points})
 	ri.TransformEnd()
 
@@ -307,22 +323,23 @@ def Table(posX, posY, posZ, rotX, rotY, rotZ, sc) :
 
 ri.WorldBegin()
 #All the geometry goes here vvv
-vertAngle = -25
-ri.Translate(0,0,7)
+vertAngle = -12.5
+horizAngle = -135
+ri.Translate(0,0,9)
 ri.AttributeBegin()
-ri.Rotate(-90+vertAngle,1,0,0)
+ri.Rotate(-95+vertAngle,1,0,0)
 ri.Rotate(5,1,0,0)
-ri.Rotate(90,0,0,1)
+ri.Rotate(70+horizAngle,0,0,1)
 ri.Light("PxrDomeLight", "holyLight",
 {
-"float exposure":[0],
+"float exposure":[1],
 "string lightColorMap":["hdrTex.tx"]
 }
 )
 ri.AttributeEnd()
 
 ri.Rotate(vertAngle,1,0,0)
-ri.Rotate(-270,0,1,0)
+ri.Rotate(horizAngle,0,1,0)
 ri.TransformBegin()
 ri.Translate(0,-1,0)
 MetalPart(0,0,0)
@@ -330,22 +347,20 @@ ri.AttributeBegin()
 ri.Bxdf("PxrDisney", "contact",
     {		
             "color baseColor":[1,1,0],
-            "float metallic":[0.8],
+            "float metallic":[1],
             "float specular":[1],
-            "float anisotropic":[0.5],
-            "float clearcoat":[0.95]
+            "float anisotropic":[0.05],
+            "float clearcoat":[0.05]
     }
     )
-MetalContact(-0.32,0.05,-0.05)
-MetalContact(-0.1,0.05,-0.05)
-MetalContact(0.32,0.05,-0.05)
-MetalContact(0.1,0.05,-0.05)
+MetalContact(-0.35,(-hYt)+0.185,-0.03)
+MetalContact(0.35,(-hYt)+0.185,-0.03)
 ri.AttributeEnd()
-PlasticBrick(-0.475,-0.175,1,0.475,-0.05,1.495,0)
-PlasticBrick(-0.42,-0.05,1,0.42,0.025,1.49,1)
+PlasticBrick(-hXt,-hYt,1,hXt,(-hYt)+0.14,hZ-0.005,0)
+PlasticBrick(-(hXt-0.055),(-hYt)+0.14,1,(hXt-0.055),(-hYt)+0.18,hZ-0.005,1)
 ri.TransformEnd()
 
-Table(0,-1.19,-1,0,45,0,3)
+Table(0,-1.19,-2,0,45,0,3)
 
 #All the geometry goes here ^^^
 ri.WorldEnd()
