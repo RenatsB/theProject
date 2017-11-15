@@ -1,2 +1,0 @@
-theProject.py
-pause
