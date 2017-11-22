@@ -1,0 +1,19 @@
+shader noiseSh (
+	color Cin=1,
+	float frequency=10,
+output float mag=0,
+output	color Cout=1
+	)
+{
+    float i;
+    float freq=frequency;
+	Cout=0.0;
+    for(i=0;i<8;i++)
+	{
+	mag+=abs((float)noise("perlin",P*freq))/freq;
+	freq*=2.1;
+	}
+    Cout=mag;
+	mag *=-1;
+}
+

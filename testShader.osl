@@ -1,8 +1,22 @@
-shader testShader (color Cin = 0, float pos=0.5, float width=0.2, output color Cout = 0, output float inStripe=0)
+shader scratchSh (
+	float Cina=0.2,
+	float Cinb=1,
+	float scale=1,
+	float freq=2,
+	float variation=0.1,
+output	float Cout=1
+	)
 {
-	float dist=abs(v-pos);
-	float fuzz=u-v;
-	//u-v
-	inStripe=smoothstep(width-fuzz,width+fuzz,dist);
-	Cout=inStripe*Cin;
+    float lightm=Cina;
+    float darkm=Cinb;
+    point PP;
+    float l;
+
+
+    PP=transform("shader",P)*scale;
+    PP=PP+(vector)noise("perlin",PP*freq)*variation;
+    PP=PP+(vector)noise("perlin",PP*freq*2.1)*variation/2.1;
+    l=sqrt(PP[0]*PP[0]+PP[1]*PP[1]);
+    Cout=mix(darkm,lightm,mod(l*8,1));
 }
+

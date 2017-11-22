@@ -227,14 +227,19 @@ def MetalPart(posX, posY, posZ) :
 	ri.TransformBegin()
 	ri.Translate(posX,posY,posZ)
 	ri.AttributeBegin()
-
+	ri.Pattern("scratchSh","scratchTx",{"float Cina":[1], "float Cinb":[0], "float scale":[1], "float freq":[2], "float variation":[0.2]})
+	ri.Pattern("scratchSh","scratchTxFlipped",{"float Cina":[0], "float Cinb":[1], "float scale":[1], "float freq":[2], "float variation":[0.2]})
+	ri.Pattern("stripes", "strTx")
+	ri.Displace("PxrDisplace","metalDisp",
+	{"float dispAmount":[0.1],
+	"reference float dispScalar":["strTx:Cout"]})
 	ri.Bxdf("PxrDisney", "metal",
     {		
-            "color baseColor":[0.25,0.25,0.25],
+            "reference color baseColor":["strTx:Cout"],
             "float metallic":[1],
-            "float specular":[1],
-            "float anisotropic":[0.5],
-            "float clearcoat":[0.95]
+            "reference float specular":["strTx:Cout"],
+            "reference float anisotropic":["strTx:Cout"],
+            "reference float clearcoat":["strTx:Cout"]
     }
     )
 
@@ -243,10 +248,7 @@ def MetalPart(posX, posY, posZ) :
 	MetalSide(-1.0)
 	MetalBottom()
 	MetalRingHoriz(-1.0)
-	MetalRingHoriz(0)
 	MetalRingSideOuter()
-	MetalCurvedTop1()
-	MetalCurvedTop2()
 	ri.TransformBegin()
 	ri.Rotate(90,1,0,0)
 	ri.Translate(0,-rB,0)
@@ -254,7 +256,21 @@ def MetalPart(posX, posY, posZ) :
 	ri.TransformEnd()
 	MetalFront()
 	MetalInside(hXt,hYt)
+	MetalRingHoriz(0)
+	MetalCurvedTop1()
+	MetalCurvedTop2()
 	ri.AttributeEnd()
+
+	#ri.AttributeBegin()
+	#ri.Attribute("displacementbound",{"sphere":[0.4],"coordinatesystem":["shader"]})
+	#ri.Pattern("noiseSh","noiseTx",{"float frequency":[26], "float mag":[2]})
+	#ri.Displace("PxrDisplace","metalDisp",
+	#{"float dispAmount":[0.9],
+	#"reference float dispScalar":["noiseTx:mag"]})
+	#ri.Bxdf("PxrDisney","curvedTop",{"color baseColor":[0.5,0.5,0.5],"float metallic":[0.95]})
+
+	
+	#ri.AttributeEnd()
 	ri.TransformEnd()
 	
 def PlasticBrick(xmin,ymin,zmin,xmax,ymax,zmax,col) :
@@ -325,7 +341,8 @@ ri.WorldBegin()
 #All the geometry goes here vvv
 vertAngle = -12.5
 horizAngle = -135
-ri.Translate(0,0,9)
+#ri.Translate(0,0,9)
+ri.Translate(0,0,4)
 ri.AttributeBegin()
 ri.Rotate(-95+vertAngle,1,0,0)
 ri.Rotate(5,1,0,0)
