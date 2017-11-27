@@ -1,19 +1,38 @@
 shader noiseSh (
 	color Cin=1,
-	float frequency=10,
-output float mag=0,
-output	color Cout=1
+	float xVal=1,
+	float yVal=1,
+	float zVal=1,
+	float freq=10,
+	output float mag=0,
+	output vector Vout=0,
 	)
 {
-    float i;
-    float freq=frequency;
-	Cout=0.0;
-    for(i=0;i<8;i++)
+	point PP=transform("object", P);
+
+	//float st = mod(freq*PP[0],xVal);
+	//float ss = mod(freq*PP[1],yVal);
+	//float sv = mod(freq*PP[2],zVal);
+
+	if(PP[0]==xVal || PP[0]==-xVal || PP[1]==yVal || PP[1]==0 || PP[2]==zVal || PP[2]==-zVal)
 	{
-	mag+=abs((float)noise("perlin",P*freq))/freq;
-	freq*=2.1;
+		Vout=vector(0,0,0);
 	}
-    Cout=mag;
-	mag *=-1;
+	else
+	{
+		float i;
+		float fre=freq;
+		for(i=0;i<8;i++)
+		{
+			mag+=((float)noise("perlin",PP*fre))/(fre);
+			fre*=2.1;
+		}
+		Vout=vector(0,mag,0);
+		//mag *=-1;
+	}
+	mag=0;
+
+
+	//Cout *= smoothstep(-0.6,0.5,PP[0])-smoothstep(0.5,0.6,PP[0]);
 }
 

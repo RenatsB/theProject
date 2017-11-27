@@ -1,17 +1,27 @@
-shader stripes  (
+shader stripes (
 	color Cin=1,
-output	color Cout=1
-)
+	float freq=10,
+    float sizeX=1,
+    float sizeY=1,
+    float sizeZ=1,
+	output float mag=0,
+	output color Cout=1
+	)
 {
-    float repeatCount=14;
-    float ss=v*repeatCount+u*1.2;
-    float filterWidthSS=5*filterwidth(ss);
-    float smag;
+    float smag=mag;
+    float fre = freq;
+	point PP=transform("object", P);
+    PP[0]*=sizeX;
+    PP[1]*=sizeY;
+    PP[2]*=sizeZ;
 
-    ss=mod(ss,2);
-    smag =smoothstep(0.5-filterWidthSS,0.5+filterWidthSS,ss);
-    smag-=smoothstep(1.5-filterWidthSS,1.5+filterWidthSS,ss);
-    
-    Cout=smag;
+	float i;
+	for(i=0;i<8;i++)
+	{
+		smag+=abs((float)noise("perlin",PP*fre))/fre;
+		fre*=2.1;
+	}
+	Cout=smag*13;
+    mag=smag*13;
+	smag *=-1;
 }
-

@@ -1,8 +1,20 @@
-shader testShader (color Cin = 0, float pos=0.5, float width=0.2, output color Cout = 0, output float inStripe=0)
+shader dirtSh (
+	color Cin=1,
+	float freq=10,
+	output float mag=0,
+	output color Cout=1
+	)
 {
-	float dist=abs(v-pos);
-	float fuzz=u-v;
-	//u-v
-	inStripe=smoothstep(width-fuzz,width+fuzz,dist);
-	Cout=inStripe*Cin;
+	point PP=transform("object", P);
+	float fre = freq;
+	float i;
+	float smag=mag;
+	for(i=0;i<8;i++)
+	{
+		smag+=abs((float)noise("perlin",PP*fre))/(fre/2);
+		fre*=2.1;
+	}
+	Cout=smag*10;
+	mag=smag*10;
+	smag *=-1;
 }

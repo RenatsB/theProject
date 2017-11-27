@@ -1,0 +1,76 @@
+OpenShadingLanguage 1.00
+# Compiled by oslc 1.7.4.pixar38bde12
+# options: 
+shader dirtSh
+param	color	Cin	1 1 1		%read{2147483647,-1} %write{2147483647,-1}
+param	float	freq	10		%read{2,2} %write{2147483647,-1}
+oparam	float	mag	0		%read{3,3} %write{18,18}
+oparam	color	Cout	1 1 1		%read{2147483647,-1} %write{17,17}
+global	point	P	%read{1,1} %write{2147483647,-1}
+local	point	PP	%read{6,15} %write{1,1}
+local	float	fre	%read{6,15} %write{2,15}
+local	float	i	%read{6,15} %write{5,15}
+local	float	smag	%read{6,19} %write{3,19}
+const	string	$const1	"object"		%read{1,1} %write{2147483647,-1}
+const	string	$const2	"transform"		%read{0,0} %write{2147483647,-1}
+const	string	$const3	"common"		%read{1,1} %write{2147483647,-1}
+const	int	$const4	0		%read{5,5} %write{2147483647,-1}
+const	int	$const5	8		%read{6,6} %write{2147483647,-1}
+temp	int	$tmp1	%read{4,15} %write{5,15}
+temp	float	$tmp2	%read{6,15} %write{6,15}
+temp	float	$tmp3	%read{6,15} %write{6,15}
+const	string	$const6	"perlin"		%read{8,8} %write{2147483647,-1}
+temp	point	$tmp4	%read{6,15} %write{6,15}
+temp	float	$tmp5	%read{6,15} %write{6,15}
+const	float	$const8	2		%read{10,10} %write{2147483647,-1}
+temp	float	$tmp6	%read{6,15} %write{6,15}
+const	float	$const9	2.0999999		%read{13,13} %write{2147483647,-1}
+const	float	$const10	1		%read{15,15} %write{2147483647,-1}
+temp	float	$tmp7	%read{2147483647,-1} %write{6,15}
+temp	float	$tmp8	%read{17,17} %write{16,16}
+const	float	$const12	10		%read{16,18} %write{2147483647,-1}
+const	float	$const14	-1		%read{19,19} %write{2147483647,-1}
+code ___main___
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\dirtSh.osl:9
+# 	float fre = freq;
+	functioncall	$const2 2 	%filename{"C:\\Users\\rbikm\\Desktop\\theProject-master\\dirtSh.osl"} %line{9} %argrw{"r"}
+# C:/Program Files\\Pixar\\RenderManProServer-21.5\\lib\\osl\\include\\stdosl.h:243
+# 
+	transform	PP $const3 $const1 P 	%filename{"C:/Program Files\\Pixar\\RenderManProServer-21.5\\lib\\osl\\include\\stdosl.h"} %line{243} %argrw{"wrrr"}
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\dirtSh.osl:10
+# 	float i;
+	assign		fre freq 	%filename{"C:\\Users\\rbikm\\Desktop\\theProject-master\\dirtSh.osl"} %line{10} %argrw{"wr"}
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\dirtSh.osl:12
+# 	for(i=0;i<8;i++)
+	assign		smag mag 	%line{12} %argrw{"wr"}
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\dirtSh.osl:13
+# 	{
+	for		$tmp1 6 7 14 16 	%line{13} %argrw{"r"}
+	assign		i $const4 	%argrw{"wr"}
+	lt		$tmp1 i $const5 	%argrw{"wrr"}
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\dirtSh.osl:15
+# 		fre*=2.1;
+	mul		$tmp4 PP fre 	%line{15} %argrw{"wrr"}
+	noise		$tmp3 $const6 $tmp4 	%argrw{"wrr"}
+	abs		$tmp2 $tmp3 	%argrw{"wr"}
+	div		$tmp5 fre $const8 	%argrw{"wrr"}
+	div		$tmp6 $tmp2 $tmp5 	%argrw{"wrr"}
+	add		smag smag $tmp6 	%argrw{"wrr"}
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\dirtSh.osl:16
+# 	}
+	mul		fre fre $const9 	%line{16} %argrw{"wrr"}
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\dirtSh.osl:13
+# 	{
+	assign		$tmp7 i 	%line{13} %argrw{"wr"}
+	add		i i $const10 	%argrw{"wrr"}
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\dirtSh.osl:18
+# 	mag=smag*10;
+	mul		$tmp8 smag $const12 	%line{18} %argrw{"wrr"}
+	assign		Cout $tmp8 	%argrw{"wr"}
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\dirtSh.osl:19
+# 	smag *=-1;
+	mul		mag smag $const12 	%line{19} %argrw{"wrr"}
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\dirtSh.osl:20
+# }
+	mul		smag smag $const14 	%line{20} %argrw{"wrr"}
+	end

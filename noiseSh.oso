@@ -1,0 +1,131 @@
+OpenShadingLanguage 1.00
+# Compiled by oslc 1.7.4.pixar38bde12
+# options: 
+shader noiseSh
+param	color	Cin	1 1 1		%read{2147483647,-1} %write{2147483647,-1}
+param	float	xVal	1		%read{3,7} %write{2147483647,-1}
+param	float	yVal	1		%read{14,14} %write{2147483647,-1}
+param	float	zVal	1		%read{26,32} %write{2147483647,-1}
+param	float	freq	10		%read{38,38} %write{2147483647,-1}
+oparam	float	mag	0		%read{41,49} %write{41,50}
+oparam	vector	Vout	0 0 0		%read{2147483647,-1} %write{37,49}
+global	point	P	%read{1,1} %write{2147483647,-1}
+local	point	PP	%read{2,48} %write{1,1}
+local	float	___306_i	%read{41,48} %write{40,48}
+local	float	___306_fre	%read{41,48} %write{38,48}
+const	string	$const1	"object"		%read{1,1} %write{2147483647,-1}
+const	string	$const2	"transform"		%read{0,0} %write{2147483647,-1}
+const	string	$const3	"common"		%read{1,1} %write{2147483647,-1}
+const	int	$const4	0		%read{2,50} %write{2147483647,-1}
+temp	float	$tmp1	%read{3,3} %write{2,2}
+temp	int	$tmp2	%read{4,4} %write{3,3}
+temp	int	$tmp3	%read{5,11} %write{4,10}
+temp	float	$tmp4	%read{8,8} %write{6,6}
+temp	float	$tmp5	%read{8,8} %write{7,7}
+temp	int	$tmp6	%read{9,9} %write{8,8}
+temp	int	$tmp7	%read{10,10} %write{9,9}
+temp	int	$tmp8	%read{12,17} %write{11,16}
+const	int	$const5	1		%read{13,19} %write{2147483647,-1}
+temp	float	$tmp9	%read{14,14} %write{13,13}
+temp	int	$tmp10	%read{15,15} %write{14,14}
+temp	int	$tmp11	%read{16,16} %write{15,15}
+temp	int	$tmp12	%read{18,23} %write{17,22}
+temp	float	$tmp13	%read{20,20} %write{19,19}
+temp	int	$tmp14	%read{21,21} %write{20,20}
+temp	int	$tmp15	%read{22,22} %write{21,21}
+temp	int	$tmp16	%read{24,29} %write{23,28}
+const	int	$const6	2		%read{25,31} %write{2147483647,-1}
+temp	float	$tmp17	%read{26,26} %write{25,25}
+temp	int	$tmp18	%read{27,27} %write{26,26}
+temp	int	$tmp19	%read{28,28} %write{27,27}
+temp	int	$tmp20	%read{30,36} %write{29,35}
+temp	float	$tmp21	%read{33,33} %write{31,31}
+temp	float	$tmp22	%read{33,33} %write{32,32}
+temp	int	$tmp23	%read{34,34} %write{33,33}
+temp	int	$tmp24	%read{35,35} %write{34,34}
+const	vector	$const7	0 0 0		%read{37,37} %write{2147483647,-1}
+const	int	$const8	8		%read{41,41} %write{2147483647,-1}
+temp	int	$tmp25	%read{39,48} %write{40,48}
+temp	float	$tmp26	%read{41,48} %write{41,48}
+const	string	$const9	"perlin"		%read{43,43} %write{2147483647,-1}
+temp	point	$tmp27	%read{41,48} %write{41,48}
+temp	float	$tmp28	%read{41,48} %write{41,48}
+const	float	$const10	2.0999999		%read{46,46} %write{2147483647,-1}
+const	float	$const11	1		%read{48,48} %write{2147483647,-1}
+temp	float	$tmp29	%read{2147483647,-1} %write{41,48}
+const	float	$const12	0		%read{49,49} %write{2147483647,-1}
+code ___main___
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\noiseSh.osl:12
+# 
+	functioncall	$const2 2 	%filename{"C:\\Users\\rbikm\\Desktop\\theProject-master\\noiseSh.osl"} %line{12} %argrw{"r"}
+# C:/Program Files\\Pixar\\RenderManProServer-21.5\\lib\\osl\\include\\stdosl.h:243
+#     fresnel(I, N, eta, Kr, Kt, R, T);
+	transform	PP $const3 $const1 P 	%filename{"C:/Program Files\\Pixar\\RenderManProServer-21.5\\lib\\osl\\include\\stdosl.h"} %line{243} %argrw{"wrrr"}
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\noiseSh.osl:18
+# 	{
+	compref		$tmp1 PP $const4 	%filename{"C:\\Users\\rbikm\\Desktop\\theProject-master\\noiseSh.osl"} %line{18} %argrw{"wrr"}
+	eq		$tmp2 $tmp1 xVal 	%argrw{"wrr"}
+	neq		$tmp3 $tmp2 $const4 	%argrw{"wrr"}
+	if		$tmp3 6 11 	%argrw{"r"}
+	compref		$tmp4 PP $const4 	%argrw{"wrr"}
+	neg		$tmp5 xVal 	%argrw{"wr"}
+	eq		$tmp6 $tmp4 $tmp5 	%argrw{"wrr"}
+	neq		$tmp7 $tmp6 $const4 	%argrw{"wrr"}
+	assign		$tmp3 $tmp7 	%argrw{"wr"}
+	neq		$tmp8 $tmp3 $const4 	%argrw{"wrr"}
+	if		$tmp8 13 17 	%argrw{"r"}
+	compref		$tmp9 PP $const5 	%argrw{"wrr"}
+	eq		$tmp10 $tmp9 yVal 	%argrw{"wrr"}
+	neq		$tmp11 $tmp10 $const4 	%argrw{"wrr"}
+	assign		$tmp8 $tmp11 	%argrw{"wr"}
+	neq		$tmp12 $tmp8 $const4 	%argrw{"wrr"}
+	if		$tmp12 19 23 	%argrw{"r"}
+	compref		$tmp13 PP $const5 	%argrw{"wrr"}
+	eq		$tmp14 $tmp13 $const4 	%argrw{"wrr"}
+	neq		$tmp15 $tmp14 $const4 	%argrw{"wrr"}
+	assign		$tmp12 $tmp15 	%argrw{"wr"}
+	neq		$tmp16 $tmp12 $const4 	%argrw{"wrr"}
+	if		$tmp16 25 29 	%argrw{"r"}
+	compref		$tmp17 PP $const6 	%argrw{"wrr"}
+	eq		$tmp18 $tmp17 zVal 	%argrw{"wrr"}
+	neq		$tmp19 $tmp18 $const4 	%argrw{"wrr"}
+	assign		$tmp16 $tmp19 	%argrw{"wr"}
+	neq		$tmp20 $tmp16 $const4 	%argrw{"wrr"}
+	if		$tmp20 31 36 	%argrw{"r"}
+	compref		$tmp21 PP $const6 	%argrw{"wrr"}
+	neg		$tmp22 zVal 	%argrw{"wr"}
+	eq		$tmp23 $tmp21 $tmp22 	%argrw{"wrr"}
+	neq		$tmp24 $tmp23 $const4 	%argrw{"wrr"}
+	assign		$tmp20 $tmp24 	%argrw{"wr"}
+	if		$tmp20 38 50 	%argrw{"r"}
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\noiseSh.osl:20
+# 	}
+	assign		Vout $const7 	%line{20} %argrw{"wr"}
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\noiseSh.osl:25
+# 		for(i=0;i<8;i++)
+	assign		___306_fre freq 	%line{25} %argrw{"wr"}
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\noiseSh.osl:26
+# 		{
+	for		$tmp25 41 42 47 49 	%line{26} %argrw{"r"}
+	assign		___306_i $const4 	%argrw{"wr"}
+	lt		$tmp25 ___306_i $const8 	%argrw{"wrr"}
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\noiseSh.osl:28
+# 			fre*=2.1;
+	mul		$tmp27 PP ___306_fre 	%line{28} %argrw{"wrr"}
+	noise		$tmp26 $const9 $tmp27 	%argrw{"wrr"}
+	div		$tmp28 $tmp26 ___306_fre 	%argrw{"wrr"}
+	add		mag mag $tmp28 	%argrw{"wrr"}
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\noiseSh.osl:29
+# 		}
+	mul		___306_fre ___306_fre $const10 	%line{29} %argrw{"wrr"}
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\noiseSh.osl:26
+# 		{
+	assign		$tmp29 ___306_i 	%line{26} %argrw{"wr"}
+	add		___306_i ___306_i $const11 	%argrw{"wrr"}
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\noiseSh.osl:31
+# 		//mag *=-1;
+	vector		Vout $const12 mag $const12 	%line{31} %argrw{"wrrr"}
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\noiseSh.osl:34
+# 
+	assign		mag $const4 	%line{34} %argrw{"wr"}
+	end

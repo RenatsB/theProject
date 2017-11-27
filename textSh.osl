@@ -1,8 +1,12 @@
-shader testShader (color Cin = 0, float pos=0.5, float width=0.2, output color Cout = 0, output float inStripe=0)
+shader textSh (
+	float offsetX=0,
+    float offsetZ=0,
+	float sizeX=1,
+	float sizeZ=1,
+	string filename="",
+	output color Cout=1
+)
 {
-	float dist=abs(v-pos);
-	float fuzz=u-v;
-	//u-v
-	inStripe=smoothstep(width-fuzz,width+fuzz,dist);
-	Cout=inStripe*Cin;
+	point PP=transform("object", P);
+    Cout=(color)texture(filename,PP[0]*sizeX+offsetX,PP[2]*sizeZ+offsetZ);
 }
