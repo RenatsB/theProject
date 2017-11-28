@@ -1,0 +1,121 @@
+##RenderMan RIB
+version 3.04
+Display "theProject.tiff" "it" "rgb" 
+Format 1280 720 1
+Projection "perspective" "fov" [45]
+Integrator "PxrPathTracer" "Integrator" 
+DepthOfField 36 0.1 3
+WorldBegin 
+Translate 0 0 4
+AttributeBegin 
+Rotate -107.5 1 0 0
+Rotate 5 1 0 0
+Rotate -65 0 0 1
+Light "PxrDomeLight" "holyLight" "float exposure" [1] "string lightColorMap" ["hdrTex.tx"]
+AttributeEnd 
+Rotate -12.5 1 0 0
+Rotate -135 0 1 0
+TransformBegin 
+Translate 0 -1 0
+TransformBegin 
+Translate 0 0 0
+AttributeBegin 
+Pattern "stripes" "strTxX" "float freq" [7] "float sizeX" [35]
+Pattern "stripes" "strTxY" "float freq" [7] "float sizeY" [35]
+Pattern "noiseSh" "noiseTx" "float xVal" [0.55] "float freq" [22] "float zVal" [-0.27] "float yVal" [0.225]
+Pattern "dirtSh" "dirtTx" "float freq" [2]
+Pattern "textSh" "myTex" "float sizeX" [0.15] "float sizeZ" [-0.15] "float offsetX" [0.5] "string filename" ["textBig.tx"] "float offsetZ" [0.5]
+AttributeBegin 
+Bxdf "PxrDisney" "metalX" "float metallic" [0.9] "reference float anisotropic" ["strTxX:magdirtTx:mag"] "reference color baseColor" ["myTex:Cout"] "reference float specular" ["strTxX:magdirtTx:mag"] "reference float clearcoat" ["strTxX:magdirtTx:mag"]
+GeneralPolygon [7] "vertex point P" [-0.6 0.225 2.25 0.6 0.225 2.25 0.6 0.225 -0.38
+0.3 0.225 -0.295 0 0.225 -0.255 -0.3 0.225 -0.295 -0.6 0.225 -0.38]
+GeneralPolygon [14] "vertex point P" [-0.6 -0.225 2.25 0.6 -0.225 2.25
+0.6 -0.225 -1.65 0.5 -0.225 -1.65 0.466667 -0.225 -1.46667 0.35 -0.225 -1.3
+0.183333 -0.225 -1.18333 0 -0.225 -1.15 -0.183333 -0.225 -1.18333 -0.35 -0.225 -1.3
+-0.466667 -0.225 -1.46667 -0.5 -0.225 -1.65 -0.6 -0.225 -1.65 -0.6 -0.225 2.25]
+GeneralPolygon [18] "vertex point P" [0.6 -0.225 -1.65 0.5 -0.225 -1.65
+0.466667 -0.225 -1.83333 0.35 -0.225 -2 0.183333 -0.225 -2.11667 0 -0.225 -2.15
+-0.183333 -0.225 -2.11667 -0.35 -0.225 -2 -0.466667 -0.225 -1.83333 -0.5 -0.225 -1.65
+-0.6 -0.225 -1.65 -0.56 -0.225 -1.87 -0.42 -0.225 -2.07 -0.22 -0.225 -2.21
+0 -0.225 -2.25 0.22 -0.225 -2.21 0.42 -0.225 -2.07 0.56 -0.225 -1.87]
+GeneralPolygon [4] "vertex point P" [-0.6 0 -1.65 -0.56 0 -1.87 -0.56 -0.225 -1.87 -0.6 -0.225 -1.65]
+GeneralPolygon [4] "vertex point P" [-0.56 0 -1.87 -0.42 0 -2.07 -0.42 -0.225 -2.07 -0.56 -0.225 -1.87]
+GeneralPolygon [4] "vertex point P" [-0.42 0 -2.07 -0.22 0 -2.21 -0.22 -0.225 -2.21 -0.42 -0.225 -2.07]
+GeneralPolygon [4] "vertex point P" [-0.22 0 -2.21 0 0 -2.25 0 -0.225 -2.25 -0.22 -0.225 -2.21]
+GeneralPolygon [4] "vertex point P" [0.6 -0.225 -1.65 0.56 -0.225 -1.87 0.56 0 -1.87 0.6 0 -1.65]
+GeneralPolygon [4] "vertex point P" [0.56 -0.225 -1.87 0.42 -0.225 -2.07 0.42 0 -2.07 0.56 0 -1.87]
+GeneralPolygon [4] "vertex point P" [0.42 -0.225 -2.07 0.22 -0.225 -2.21 0.22 0 -2.21 0.42 0 -2.07]
+GeneralPolygon [4] "vertex point P" [0.22 -0.225 -2.21 0 -0.225 -2.25 0 0 -2.25 0.22 0 -2.21]
+GeneralPolygon [4 4] "vertex point P" [0.6 0.225 2.25 -0.6 0.225 2.25 -0.6 -0.225 2.25 0.6 -0.225 2.25
+0.555 0.18 2.25 -0.555 0.18 2.25 -0.555 -0.18 2.25 0.555 -0.18 2.25]
+GeneralPolygon [4] "vertex point P" [0.555 0.18 2.25 0.555 0.18 1 -0.555 0.18 1 -0.555 0.18 2.25]
+GeneralPolygon [4] "vertex point P" [0.555 0.18 2.25 0.555 0.18 1 0.555 -0.18 1 0.555 -0.18 2.25]
+GeneralPolygon [4] "vertex point P" [-0.555 0.18 2.25 -0.555 0.18 1 -0.555 -0.18 1 -0.555 -0.18 2.25]
+GeneralPolygon [4] "vertex point P" [-0.555 -0.18 2.25 0.555 -0.18 2.25 0.555 -0.18 1 -0.555 0.18 1]
+TransformBegin 
+Rotate 90 1 0 0
+Translate 0 -1.65 0
+Cylinder 0.5 0 0.225 360 
+TransformEnd 
+AttributeEnd 
+AttributeBegin 
+Bxdf "PxrDisney" "metalY" "reference float anisotropic" ["strTxY:magdirtTx:mag"] "color baseColor" [0.5 0.5 0.5] "float metallic" [0.9] "reference float specular" ["strTxY:magdirtTx:mag"] "reference float clearcoat" ["strTxY:magdirtTx:mag"]
+GeneralPolygon [7] "vertex point P" [0.6 -0.225 2.25 0.6 0.225 2.25 0.6 0.225 -0.38
+0.6 0.1 -0.88 0.6 0 -1.65 0.6 -0.225 -1.65 0.6 -0.225 2.25]
+GeneralPolygon [7] "vertex point P" [-0.6 -0.225 2.25 -0.6 0.225 2.25 -0.6 0.225 -0.38
+-0.6 0.1 -0.88 -0.6 0 -1.65 -0.6 -0.225 -1.65 -0.6 -0.225 2.25]
+AttributeBegin 
+Attribute "displacementbound" "sphere" [0.1]
+Displace "PxrDisplace" "metalDisp" "reference vector dispVector" ["noiseTx:Vout"] "float dispAmount" [0.4]
+GeneralPolygon [18] "vertex point P" [0.6 0 -1.65 0.5 0 -1.65
+0.466667 0 -1.83333 0.35 0 -2 0.183333 0 -2.11667 0 0 -2.15
+-0.183333 0 -2.11667 -0.35 0 -2 -0.466667 0 -1.83333 -0.5 0 -1.65
+-0.6 0 -1.65 -0.56 0 -1.87 -0.42 0 -2.07 -0.22 0 -2.21
+0 0 -2.25 0.22 0 -2.21 0.42 0 -2.07 0.56 0 -1.87]
+GeneralPolygon [10] "vertex point P" [0.6 0.225 -0.38 0.3 0.225 -0.295
+0 0.225 -0.255 -0.3 0.225 -0.295 -0.6 0.225 -0.38 -0.6 0.1 -0.88
+-0.3 0.09 -0.86 0 0.0875 -0.8 0.3 0.09 -0.86 0.6 0.1 -0.88]
+GeneralPolygon [16] "vertex point P" [-0.6 0.1 -0.88 -0.3 0.09 -0.86 0 0.0875 -0.8 0.3 0.09 -0.86
+0.6 0.1 -0.88 0.6 0 -1.65 0.5 0 -1.65 0.466667 0 -1.46667
+0.35 0 -1.3 0.183333 0 -1.18333 0 0 -1.15 -0.183333 0 -1.18333
+-0.35 0 -1.3 -0.466667 0 -1.46667 -0.5 0 -1.65 -0.6 0 -1.65]
+AttributeEnd 
+AttributeEnd 
+AttributeEnd 
+TransformEnd 
+AttributeBegin 
+Bxdf "PxrDisney" "contact" "float anisotropic" [0.05] "color baseColor" [1 1 0] "float metallic" [1] "float clearcoat" [0.05] "float specular" [1]
+TransformBegin 
+Translate -0.35 0.005 -0.03
+GeneralPolygon [4] "vertex point P" [-0.025 0 2.25 -0.025 0 1 0.025 0 1 0.025 0 2.25]
+TransformEnd 
+TransformBegin 
+Translate 0.35 0.005 -0.03
+GeneralPolygon [4] "vertex point P" [-0.025 0 2.25 -0.025 0 1 0.025 0 1 0.025 0 2.25]
+TransformEnd 
+AttributeEnd 
+AttributeBegin 
+Bxdf "PxrDisney" "table" "float anisotropic" [0.1] "color baseColor" [0 0 0] "float metallic" [0.9] "float clearcoat" [0.5] "float specular" [0.9]
+GeneralPolygon [4] "vertex point P" [-0.555 -0.18 2.245 -0.555 -0.04 2.245 0.555 -0.04 2.245 0.555 -0.18 2.245]
+GeneralPolygon [4] "vertex point P" [-0.555 -0.18 2.245 -0.555 -0.04 2.245 -0.555 -0.04 1 -0.555 -0.18 1]
+GeneralPolygon [4] "vertex point P" [0.555 -0.18 2.245 0.555 -0.04 2.245 0.555 -0.04 1 0.555 -0.18 1]
+GeneralPolygon [4] "vertex point P" [-0.555 -0.04 2.245 -0.555 -0.04 1 0.555 -0.04 1 0.555 -0.04 2.245]
+AttributeEnd 
+AttributeBegin 
+Bxdf "PxrDisney" "table" "float anisotropic" [0.1] "color baseColor" [0 0 1] "float metallic" [0.9] "float clearcoat" [0.5] "float specular" [0.9]
+GeneralPolygon [4] "vertex point P" [-0.5 -0.04 2.245 -0.5 0 2.245 0.5 0 2.245 0.5 -0.04 2.245]
+GeneralPolygon [4] "vertex point P" [-0.5 -0.04 2.245 -0.5 0 2.245 -0.5 0 1 -0.5 -0.04 1]
+GeneralPolygon [4] "vertex point P" [0.5 -0.04 2.245 0.5 0 2.245 0.5 0 1 0.5 -0.04 1]
+GeneralPolygon [4] "vertex point P" [-0.5 0 2.245 -0.5 0 1 0.5 0 1 0.5 0 2.245]
+AttributeEnd 
+TransformEnd 
+Bxdf "PxrDisney" "table" "float anisotropic" [0.5] "color baseColor" [1 1 1] "float metallic" [0.8] "float clearcoat" [0.95] "float specular" [1]
+TransformBegin 
+Translate 0 -1.19 -2
+Rotate 0 1 0 0
+Rotate 45 0 1 0
+Rotate 0 0 0 1
+Scale 3 3 3
+Patch "bilinear" "P" [5 0 -5 5 0 5 -5 0 -5 -5 0 5]
+TransformEnd 
+WorldEnd 

@@ -6,7 +6,7 @@ filename = "theProject.rib"
 ri.Begin(filename)
 
 ri.Display("theProject.tiff", "it", "rgb")
-ri.Format(720,480,1)
+ri.Format(1280,720,1)
 ri.Projection("perspective", {"fov":[45]})
 ri.Integrator('PxrPathTracer', 'Integrator')
 ri.DepthOfField(36,0.1,3)
@@ -227,50 +227,77 @@ def MetalPart(posX, posY, posZ) :
 	ri.TransformBegin()
 	ri.Translate(posX,posY,posZ)
 	ri.AttributeBegin()
-	ri.Pattern("scratchSh","scratchTx",{"float Cina":[1], "float Cinb":[0], "float scale":[1], "float freq":[2], "float variation":[0.2]})
-	ri.Pattern("scratchSh","scratchTxFlipped",{"float Cina":[0], "float Cinb":[1], "float scale":[1], "float freq":[2], "float variation":[0.2]})
-	ri.Pattern("stripes", "strTx")
-	ri.Displace("PxrDisplace","metalDisp",
-	{"float dispAmount":[0.1],
-	"reference float dispScalar":["strTx:Cout"]})
-	ri.Bxdf("PxrDisney", "metal",
+	ri.Pattern("stripes", "strTxX", {"float freq":[7], "float sizeX":[35]})
+	ri.Pattern("stripes", "strTxY", {"float freq":[7], "float sizeY":[35]})
+	ri.Pattern("noiseSh", "noiseTx", {"float xVal":[0.55], "float yVal":[0.225], "float zVal":[-(cB-0.11)], "float freq":[22]})
+	ri.Pattern("dirtSh", "dirtTx", {"float freq":[2]})
+	ri.Pattern("textSh", "myTex", {"string filename":["textBig.tx"], "float offsetX":[0.5], "float offsetZ":[0.5], "float sizeX":[0.15], "float sizeZ":[-0.15]})
+	ri.AttributeBegin()
+	ri.Bxdf("PxrDisney", "metalX",
     {		
-            "reference color baseColor":["strTx:Cout"],
-            "float metallic":[1],
-            "reference float specular":["strTx:Cout"],
-            "reference float anisotropic":["strTx:Cout"],
-            "reference float clearcoat":["strTx:Cout"]
+            #"color baseColor":[0.5,0.5,0.5],
+			#"reference color baseColor":["strTxX:Cout"],
+			"reference color baseColor":["myTex:Cout"],
+            "float metallic":[0.9],
+            "reference float specular":["strTxX:mag"+"dirtTx:mag"],
+            "reference float anisotropic":["strTxX:mag"+"dirtTx:mag"],
+            "reference float clearcoat":["strTxX:mag"+"dirtTx:mag"]
     }
     )
 
 	MetalTop()
-	MetalSide(1.0)
-	MetalSide(-1.0)
 	MetalBottom()
 	MetalRingHoriz(-1.0)
 	MetalRingSideOuter()
+	MetalFront()
+	MetalInside(hXt,hYt)
 	ri.TransformBegin()
 	ri.Rotate(90,1,0,0)
 	ri.Translate(0,-rB,0)
 	ri.Cylinder(rR,0,hY,360.0)
 	ri.TransformEnd()
-	MetalFront()
-	MetalInside(hXt,hYt)
-	MetalRingHoriz(0)
-	MetalCurvedTop1()
-	MetalCurvedTop2()
 	ri.AttributeEnd()
 
-	#ri.AttributeBegin()
-	#ri.Attribute("displacementbound",{"sphere":[0.4],"coordinatesystem":["shader"]})
-	#ri.Pattern("noiseSh","noiseTx",{"float frequency":[26], "float mag":[2]})
-	#ri.Displace("PxrDisplace","metalDisp",
-	#{"float dispAmount":[0.9],
-	#"reference float dispScalar":["noiseTx:mag"]})
-	#ri.Bxdf("PxrDisney","curvedTop",{"color baseColor":[0.5,0.5,0.5],"float metallic":[0.95]})
-
+	ri.AttributeBegin()
+	ri.Bxdf("PxrDisney", "metalY",
+    {		
+            "color baseColor":[0.5,0.5,0.5],
+			#"reference color baseColor":["strTxY:Cout"],
+            "float metallic":[0.9],
+            "reference float specular":["strTxY:mag"+"dirtTx:mag"],
+            "reference float anisotropic":["strTxY:mag"+"dirtTx:mag"],
+            "reference float clearcoat":["strTxY:mag"+"dirtTx:mag"]
+    }
+    )
+	MetalSide(1.0)
+	MetalSide(-1.0)
 	
-	#ri.AttributeEnd()
+	#"reference float dispScalar":["noiseTx:mag"]
+
+	ri.AttributeBegin()
+	ri.Attribute("displacementbound", {"sphere":[0.1]}, {"coordinatesystem":["shader"]})
+	ri.Displace("PxrDisplace","metalDisp",
+	{"float dispAmount":[0.4],
+		"reference vector dispVector":["noiseTx:Vout"]
+	}
+	)
+	#ri.TransformBegin()
+	#ri.Translate(0,-0.02,0)
+	MetalRingHoriz(0)
+	MetalCurvedTop1()
+
+	#ri.TransformBegin()
+	#ri.Translate(0,0.0275,0)
+	MetalCurvedTop2()
+	#ri.TransformEnd()
+
+	#ri.TransformEnd()
+
+	ri.AttributeEnd()
+
+	ri.AttributeEnd()
+
+	ri.AttributeEnd()
 	ri.TransformEnd()
 	
 def PlasticBrick(xmin,ymin,zmin,xmax,ymax,zmax,col) :
