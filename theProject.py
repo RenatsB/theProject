@@ -169,6 +169,7 @@ def MetalCurvedTop1() :
 	hX/2,hY/hPart-0.01,-(cB+0.48),
 	hX,hY/hPart,-(cB+0.5)]
 	ri.GeneralPolygon ([len(points)/3], {ri.P:points})
+	#ri.SubdivisionMesh("loop",[4,4,4,4], [9,8,1,0, 8,7,2,1, 7,6,3,2, 6,5,4,3],[],[],[], {ri.P:points})
 
 def MetalCurvedTop2() :
 	points=[-hX,hY/hPart,-(cB+0.5),
@@ -229,7 +230,7 @@ def MetalPart(posX, posY, posZ) :
 	ri.AttributeBegin()
 	ri.Pattern("stripes", "strTxX", {"float freq":[7], "float sizeX":[35]})
 	ri.Pattern("stripes", "strTxY", {"float freq":[7], "float sizeY":[35]})
-	ri.Pattern("noiseSh", "noiseTx", {"float xVal":[0.55], "float yVal":[0.225], "float zVal":[-(cB-0.11)], "float freq":[22]})
+	ri.Pattern("noiseSh", "noiseTx", {"float xVal":[0.55], "float yVal":[0.22], "float zVal":[0.9], "float freq":[22]})
 	ri.Pattern("dirtSh", "dirtTx", {"float freq":[2]})
 	ri.Pattern("textSh", "myTex", {"string filename":["textBig.tx"], "float offsetX":[0.5], "float offsetZ":[0.5], "float sizeX":[0.15], "float sizeZ":[-0.15]})
 	ri.AttributeBegin()
@@ -251,11 +252,6 @@ def MetalPart(posX, posY, posZ) :
 	MetalRingSideOuter()
 	MetalFront()
 	MetalInside(hXt,hYt)
-	ri.TransformBegin()
-	ri.Rotate(90,1,0,0)
-	ri.Translate(0,-rB,0)
-	ri.Cylinder(rR,0,hY,360.0)
-	ri.TransformEnd()
 	ri.AttributeEnd()
 
 	ri.AttributeBegin()
@@ -271,6 +267,12 @@ def MetalPart(posX, posY, posZ) :
     )
 	MetalSide(1.0)
 	MetalSide(-1.0)
+	ri.TransformBegin()
+	ri.Rotate(90,1,0,0)
+	ri.Translate(0,-rB,0)
+	ri.CoorinateSystem("cylinder");
+	ri.Cylinder(rR,0,hY,360.0)
+	ri.TransformEnd()
 	
 	#"reference float dispScalar":["noiseTx:mag"]
 

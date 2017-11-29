@@ -14,25 +14,24 @@ shader noiseSh (
 	//float ss = mod(freq*PP[1],yVal);
 	//float sv = mod(freq*PP[2],zVal);
 
-	if(PP[0]==xVal || PP[0]==-xVal || PP[1]==yVal || PP[1]==0 || PP[2]==zVal || PP[2]==-zVal)
+	if(u*PP[0] == PP[0] || v*PP[1] == PP[1])
 	{
 		Vout=vector(0,0,0);
 	}
 	else
 	{
-		float i;
-		float fre=freq;
-		for(i=0;i<8;i++)
-		{
-			mag+=((float)noise("perlin",PP*fre))/(fre);
-			fre*=2.1;
-		}
-		Vout=vector(0,mag,0);
-		//mag *=-1;
+	float i;
+	float fre=freq;
+	for(i=0;i<8;i++)
+	{
+		mag+=((float)noise("perlin",PP*fre))/(fre);
+		fre*=2.1;
+	}
+	Vout=vector(0,mag,0);
+	//mag *=-1;
 	}
 	mag=0;
 
 
 	//Cout *= smoothstep(-0.6,0.5,PP[0])-smoothstep(0.5,0.6,PP[0]);
 }
-
