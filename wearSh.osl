@@ -1,8 +1,0 @@
-shader testShader (color Cin = 0, float pos=0.5, float width=0.2, output color Cout = 0, output float inStripe=0)
-{
-	float dist=abs(v-pos);
-	float fuzz=u-v;
-	//u-v
-	inStripe=smoothstep(width-fuzz,width+fuzz,dist);
-	Cout=inStripe*Cin;
-}
