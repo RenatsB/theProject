@@ -6,6 +6,7 @@ filename = "theProject.rib"
 ri.Begin(filename)
 
 ri.Display("theProject.tiff", "it", "rgb")
+#ri.Format(1280,720,1)
 ri.Format(1280,720,1)
 ri.Projection("perspective", {"fov":[45]})
 ri.Integrator('PxrPathTracer', 'Integrator')
@@ -49,12 +50,16 @@ hYt=hY-metalThickness
 def MetalTop() :
 	points=[-hX,hY,hZ,
 	hX,hY,hZ,
+	hX,hY,0,
 	hX,hY,-cB,
 	hX/2,hY,-(cB-0.085),
 	0,hY,-(cB-0.125),
 	-hX/2,hY,-(cB-0.085),
-	-hX,hY,-cB]
-	ri.GeneralPolygon ([len(points)/3], {ri.P:points})
+	-hX,hY,-cB,
+	-hX,hY,0]
+	ri.SubdivisionMesh("loop",[4,3,3,3,3,3],
+	[0,1,2,8, 2,3,4, 4,5,2, 5,8,2, 5,6,8, 6,7,8],
+	["interpolateboundary"],[0,0],[],[], {ri.P:points})	
 
 def MetalSide(signF) :
 	val=signF*hX
@@ -104,7 +109,9 @@ def MetalRingHoriz(signF) :
 	ringAo,val,-(rB+ringCo),
 	ringBo,val,-(rB+ringBo),
 	ringCo,val,-(rB+ringAo)]
-	ri.GeneralPolygon ([len(points)/3], {ri.P:points})
+	ri.SubdivisionMesh("loop",[4,4,4,4,4,4,4,4],
+	[0,1,2,17, 2,3,16,17, 3,4,15,16, 4,5,14,15, 5,6,13,14, 6,7,12,13, 7,8,11,12, 8,9,10,11],
+	["interpolateboundary"],[0,0],[],[], {ri.P:points})	
 
 def MetalRingSideOuter() :
 	signA = 0.0
@@ -112,50 +119,29 @@ def MetalRingSideOuter() :
 	rAo = (rB+ringAo)
 	rBo = (rB+ringBo)
 	rCo = (rB+ringCo)
-	points1a=[-hX,signA,-rB,
+	points=[-hX,signA,-rB,
 	-ringCo,signA,-rAo,
+	-ringBo,signA,-rBo,
+	-ringAo,signA,-rCo,
+	0,signA,-hZ,
+	ringAo,signA,-rCo,
+	ringBo,signA,-rBo,
+	ringCo,signA,-rAo,
+	hX,signA,-rB,
+	hX,signB,-rB,
+	ringCo,signB,-rAo,
+	ringBo,signB,-rBo,
+	ringAo,signB,-rCo,
+	0,signB,-hZ,
+	-ringAo,signB,-rCo,
+	-ringBo,signB,-rBo,
 	-ringCo,signB,-rAo,
 	-hX,signB,-rB]
-	points2a=[-ringCo,signA,-rAo,
-	-ringBo,signA,-rBo,	
-	-ringBo,signB,-rBo,
-	-ringCo,signB,-rAo]
-	points3a=[-ringBo,signA,-rBo,
-	-ringAo,signA,-rCo,
-	-ringAo,signB,-rCo,
-	-ringBo,signB,-rBo]
-	points4a=[-ringAo,signA,-rCo,
-	0,signA,-hZ,
-	0,signB,-hZ,
-	-ringAo,signB,-rCo]
-	#end of left side
-	signA = -hY
-	signB = 0.0
-	points1b=[hX,signA,-rB,
-	ringCo,signA,-rAo,
-	ringCo,signB,-rAo,
-	hX,signB,-rB]
-	points2b=[ringCo,signA,-rAo,
-	ringBo,signA,-rBo,	
-	ringBo,signB,-rBo,
-	ringCo,signB,-rAo]
-	points3b=[ringBo,signA,-rBo,
-	ringAo,signA,-rCo,
-	ringAo,signB,-rCo,
-	ringBo,signB,-rBo]
-	points4b=[ringAo,signA,-rCo,
-	0,signA,-hZ,
-	0,signB,-hZ,
-	ringAo,signB,-rCo]
-	#end of right side
-	ri.GeneralPolygon ([len(points1a)/3], {ri.P:points1a})
-	ri.GeneralPolygon ([len(points2a)/3], {ri.P:points2a})
-	ri.GeneralPolygon ([len(points3a)/3], {ri.P:points3a})
-	ri.GeneralPolygon ([len(points4a)/3], {ri.P:points4a})
-	ri.GeneralPolygon ([len(points1b)/3], {ri.P:points1b})
-	ri.GeneralPolygon ([len(points2b)/3], {ri.P:points2b})
-	ri.GeneralPolygon ([len(points3b)/3], {ri.P:points3b})
-	ri.GeneralPolygon ([len(points4b)/3], {ri.P:points4b})
+	ri.SubdivisionMesh("loop",[4,4,4,4,4,4,4,4],
+	[0,1,16,17, 1,2,15,16, 2,3,14,15, 3,4,13,14, 4,5,12,13, 5,6,11,12, 6,7,10,11, 7,8,9,10],
+	["interpolateboundary"],[0,0],[],[], {ri.P:points})	
+
+
 
 def MetalCurvedTop1() :
 	points=[hX,hY,-cB,
@@ -164,18 +150,18 @@ def MetalCurvedTop1() :
 	-hX/2,hY,-(cB-0.085),
 	-hX,hY,-cB,
 	-hX,hY/hPart,-(cB+0.5),
-	-hX/2,hY/hPart-0.01,-(cB+0.48),
-	0,hY/hPart-0.0125,-(cB+0.42),
-	hX/2,hY/hPart-0.01,-(cB+0.48),
+	-hX/2,hY/hPart-0.01,-(cB+0.47),
+	0,hY/hPart-0.0125,-(cB+0.455),
+	hX/2,hY/hPart-0.01,-(cB+0.47),
 	hX,hY/hPart,-(cB+0.5)]
-	ri.GeneralPolygon ([len(points)/3], {ri.P:points})
-	#ri.SubdivisionMesh("loop",[4,4,4,4], [9,8,1,0, 8,7,2,1, 7,6,3,2, 6,5,4,3],[],[],[], {ri.P:points})
+	ri.SubdivisionMesh("loop",[4,4,4,4], [0,1,8,9, 1,2,7,8, 2,3,6,7, 3,4,5,6],["interpolateboundary"],
+	[0,0],[],[], {ri.P:points})	
 
 def MetalCurvedTop2() :
 	points=[-hX,hY/hPart,-(cB+0.5),
-	-hX/2,hY/hPart-0.01,-(cB+0.48),
-	0,hY/hPart-0.0125,-(cB+0.42),
-	hX/2,hY/hPart-0.01,-(cB+0.48),
+	-hX/2,hY/hPart-0.01,-(cB+0.47),
+	0,hY/hPart-0.0125,-(cB+0.455),
+	hX/2,hY/hPart-0.01,-(cB+0.47),
 	hX,hY/hPart,-(cB+0.5),
 	hX,0,-rB,
 	rR,0,-rB,
@@ -187,8 +173,12 @@ def MetalCurvedTop2() :
 	-ringB,0,-(rB-ringB),
 	-ringC,0,-(rB-ringA),
 	-rR,0,-rB,
-	-hX,0,-rB]
-	ri.GeneralPolygon ([len(points)/3], {ri.P:points})
+	-hX,0,-rB,
+	-hX,hY/4-0.006,-(cB+0.5+(rB-(cB+0.5))/2),
+	hX,hY/4-0.006,-(cB+0.5+(rB-(cB+0.5))/2)]
+	ri.SubdivisionMesh("loop",[4,3,4,3,4,4,3,4,3,4],
+	[13,14,15,16, 16,12,13, 16,0,1,12, 1,11,12, 1,2,10,11, 2,3,9,10, 3,8,9, 3,4,17,8, 17,7,8, 17,5,6,7],
+	["interpolateboundary"],[0,0],[],[], {ri.P:points})
 
 def MetalFront() :
 	points=[hX,hY,hZ,
@@ -232,17 +222,18 @@ def MetalPart(posX, posY, posZ) :
 	ri.Pattern("stripes", "strTxY", {"float freq":[7], "float sizeY":[35]})
 	ri.Pattern("noiseSh", "noiseTx", {"float xVal":[0.55], "float yVal":[0.22], "float zVal":[0.9], "float freq":[22]})
 	ri.Pattern("dirtSh", "dirtTx", {"float freq":[2]})
-	ri.Pattern("textSh", "myTex", {"string filename":["textBig.tx"], "float offsetX":[0.5], "float offsetZ":[0.5], "float sizeX":[0.15], "float sizeZ":[-0.15]})
+	ri.Pattern("textureLoad", "myTex1", {"string filename":["textBig_Alpha.tx"], "float offsetX":[0.5], "float offsetZ":[0.5], "float sizeX":[0.35], "float sizeZ":[-0.18]})
+	ri.Pattern("textureLoad", "myTex2", {"string filename":["Scratch_Alpha.tx"], "float offsetX":[0.5], "float offsetZ":[0.5], "float sizeX":[0.35], "float sizeZ":[-0.18]})
 	ri.AttributeBegin()
 	ri.Bxdf("PxrDisney", "metalX",
     {		
-            #"color baseColor":[0.5,0.5,0.5],
-			#"reference color baseColor":["strTxX:Cout"],
-			"reference color baseColor":["myTex:Cout"],
-            "float metallic":[0.9],
-            "reference float specular":["strTxX:mag"+"dirtTx:mag"],
-            "reference float anisotropic":["strTxX:mag"+"dirtTx:mag"],
-            "reference float clearcoat":["strTxX:mag"+"dirtTx:mag"]
+            "color baseColor":[0.5,0.5,0.5],
+			#"reference color baseColor":["myTex2:Cout"],
+            "reference float metallic":["myTex1:mag"],
+            "reference float specular":["myTex2:mag"],
+            #"reference float anisotropic":["myTex2:mag"],
+            #"reference float clearcoat":["myTex2:mag"],
+			"reference float roughness":["myTex1:mag"]
     }
     )
 
@@ -258,11 +249,11 @@ def MetalPart(posX, posY, posZ) :
 	ri.Bxdf("PxrDisney", "metalY",
     {		
             "color baseColor":[0.5,0.5,0.5],
-			#"reference color baseColor":["strTxY:Cout"],
-            "float metallic":[0.9],
-            "reference float specular":["strTxY:mag"+"dirtTx:mag"],
-            "reference float anisotropic":["strTxY:mag"+"dirtTx:mag"],
-            "reference float clearcoat":["strTxY:mag"+"dirtTx:mag"]
+            "float metallic":[0.95],
+            "reference float specular":["myTex2:mag"]
+            #"reference float anisotropic":["strTxY:mag"+"dirtTx:mag"],
+            #"reference float clearcoat":["strTxY:mag"+"dirtTx:mag"],
+			#"reference float roughness":["myTex1:mag"]
     }
     )
 	MetalSide(1.0)
@@ -270,16 +261,16 @@ def MetalPart(posX, posY, posZ) :
 	ri.TransformBegin()
 	ri.Rotate(90,1,0,0)
 	ri.Translate(0,-rB,0)
-	ri.CoorinateSystem("cylinder");
+	#ri.CoorinateSystem("cylinder")
 	ri.Cylinder(rR,0,hY,360.0)
 	ri.TransformEnd()
 	
 	#"reference float dispScalar":["noiseTx:mag"]
 
 	ri.AttributeBegin()
-	ri.Attribute("displacementbound", {"sphere":[0.1]}, {"coordinatesystem":["shader"]})
+	ri.Attribute("displacementbound", {"sphere":[0.5]}, {"coordinatesystem":["shader"]})
 	ri.Displace("PxrDisplace","metalDisp",
-	{"float dispAmount":[0.4],
+	{"float dispAmount":[0.1],
 		"reference vector dispVector":["noiseTx:Vout"]
 	}
 	)
@@ -368,10 +359,11 @@ def Table(posX, posY, posZ, rotX, rotY, rotZ, sc) :
 
 ri.WorldBegin()
 #All the geometry goes here vvv
-vertAngle = -12.5
-horizAngle = -135
+#vertAngle = -12.5
+vertAngle = -25.5
+horizAngle = -75
 #ri.Translate(0,0,9)
-ri.Translate(0,0,4)
+ri.Translate(0,0.75,3.5)
 ri.AttributeBegin()
 ri.Rotate(-95+vertAngle,1,0,0)
 ri.Rotate(5,1,0,0)

@@ -1,0 +1,14 @@
+shader textureLoad (
+	float offsetX=0,
+    float offsetZ=0,
+	float sizeX=1,
+	float sizeZ=1,
+	string filename="",
+	output color Cout=1,
+    output float mag=1
+)
+{
+	point PP=transform("object", P);
+    Cout=(color)texture(filename,PP[0]*sizeX+offsetX,PP[2]*sizeZ+offsetZ);
+    mag=(float)(max(0, min(Cout[1], 1)));
+}

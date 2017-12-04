@@ -1,0 +1,51 @@
+OpenShadingLanguage 1.00
+# Compiled by oslc 1.7.4.pixar38bde12
+# options: 
+shader textureLoad
+param	float	offsetX	0		%read{4,4} %write{2147483647,-1} %derivs
+param	float	offsetZ	0		%read{7,7} %write{2147483647,-1} %derivs
+param	float	sizeX	1		%read{3,3} %write{2147483647,-1} %derivs
+param	float	sizeZ	1		%read{6,6} %write{2147483647,-1} %derivs
+param	string	filename	""		%read{8,8} %write{2147483647,-1}
+oparam	color	Cout	1 1 1		%read{9,9} %write{8,8}
+oparam	float	mag	1		%read{2147483647,-1} %write{11,11}
+global	point	P	%read{1,1} %write{2147483647,-1} %derivs
+local	point	PP	%read{2,5} %write{1,1} %derivs
+const	string	$const1	"object"		%read{1,1} %write{2147483647,-1}
+const	string	$const2	"transform"		%read{0,0} %write{2147483647,-1}
+const	string	$const3	"common"		%read{1,1} %write{2147483647,-1}
+const	int	$const4	0		%read{2,2} %write{2147483647,-1}
+temp	float	$tmp1	%read{3,3} %write{2,2} %derivs
+temp	float	$tmp2	%read{4,4} %write{3,3} %derivs
+temp	float	$tmp3	%read{8,8} %write{4,4} %derivs
+const	int	$const5	2		%read{5,5} %write{2147483647,-1}
+temp	float	$tmp4	%read{6,6} %write{5,5} %derivs
+temp	float	$tmp5	%read{7,7} %write{6,6} %derivs
+temp	float	$tmp6	%read{8,8} %write{7,7} %derivs
+const	float	$const6	0		%read{11,11} %write{2147483647,-1}
+temp	float	$tmp7	%read{11,11} %write{10,10}
+const	int	$const7	1		%read{9,9} %write{2147483647,-1}
+temp	float	$tmp8	%read{10,10} %write{9,9}
+const	float	$const8	1		%read{10,10} %write{2147483647,-1}
+code ___main___
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\textureLoad.osl:12
+#     Cout=(color)texture(filename,PP[0]*sizeX+offsetX,PP[2]*sizeZ+offsetZ);
+	functioncall	$const2 2 	%filename{"C:\\Users\\rbikm\\Desktop\\theProject-master\\textureLoad.osl"} %line{12} %argrw{"r"}
+# C:/Program Files\\Pixar\\RenderManProServer-21.5\\lib\\osl\\include\\stdosl.h:243
+#     fresnel(I, N, eta, Kr, Kt, R, T);
+	transform	PP $const3 $const1 P 	%filename{"C:/Program Files\\Pixar\\RenderManProServer-21.5\\lib\\osl\\include\\stdosl.h"} %line{243} %argrw{"wrrr"}
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\textureLoad.osl:13
+#     mag=(float)(max(0, min(Cout[1], 1)));
+	compref		$tmp1 PP $const4 	%filename{"C:\\Users\\rbikm\\Desktop\\theProject-master\\textureLoad.osl"} %line{13} %argrw{"wrr"}
+	mul		$tmp2 $tmp1 sizeX 	%argrw{"wrr"}
+	add		$tmp3 $tmp2 offsetX 	%argrw{"wrr"}
+	compref		$tmp4 PP $const5 	%argrw{"wrr"}
+	mul		$tmp5 $tmp4 sizeZ 	%argrw{"wrr"}
+	add		$tmp6 $tmp5 offsetZ 	%argrw{"wrr"}
+	texture		Cout filename $tmp3 $tmp6 	%argrw{"wrrr"} %argderivs{2,3}
+# C:\\Users\\rbikm\\Desktop\\theProject-master\\textureLoad.osl:14
+# }
+	compref		$tmp8 Cout $const7 	%line{14} %argrw{"wrr"}
+	min		$tmp7 $tmp8 $const8 	%argrw{"wrr"}
+	max		mag $const6 $tmp7 	%argrw{"wrr"}
+	end
