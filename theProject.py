@@ -8,9 +8,11 @@ ri.Begin(filename)
 ri.Display("theProject.tiff", "it", "rgb")
 #ri.Format(1280,720,1)
 ri.Format(1280,720,1)
+ri.Quantize("rgba",255,0,255,0)
 ri.Projection("perspective", {"fov":[45]})
 ri.Integrator('PxrPathTracer', 'Integrator')
 ri.DepthOfField(36,0.1,3)
+ri.Exposure(1.0,2.2)
 
 #variables used to position vertices
 #hX - half width
@@ -220,7 +222,7 @@ def MetalPart(posX, posY, posZ) :
 	ri.AttributeBegin()
 	ri.Pattern("stripes", "strTxX", {"float freq":[7], "float sizeX":[35]})
 	ri.Pattern("stripes", "strTxY", {"float freq":[7], "float sizeY":[35]})
-	ri.Pattern("noiseSh", "noiseTx", {"float xVal":[0.55], "float yVal":[0.22], "float zVal":[0.9], "float freq":[22]})
+	ri.Pattern("noiseSh", "noiseTx", {"float xVal":[0.55], "float yVal":[0.22], "float zVal":[0.9], "float freq":[41]})
 	ri.Pattern("dirtSh", "dirtTx", {"float freq":[2]})
 	ri.Pattern("textureLoad", "myTex1", {"string filename":["textBig_Alpha.tx"], "float offsetX":[0.5], "float offsetZ":[0.5], "float sizeX":[0.35], "float sizeZ":[-0.18]})
 	ri.Pattern("textureLoad", "myTex2", {"string filename":["Scratch_Alpha.tx"], "float offsetX":[0.5], "float offsetZ":[0.5], "float sizeX":[0.35], "float sizeZ":[-0.18]})
@@ -249,11 +251,11 @@ def MetalPart(posX, posY, posZ) :
 	ri.Bxdf("PxrDisney", "metalY",
     {		
             "color baseColor":[0.5,0.5,0.5],
-            "float metallic":[0.95],
-            "reference float specular":["myTex2:mag"]
+            "reference float metallic":["myTex1:mag"],
+            "reference float specular":["myTex2:mag"],
             #"reference float anisotropic":["strTxY:mag"+"dirtTx:mag"],
             #"reference float clearcoat":["strTxY:mag"+"dirtTx:mag"],
-			#"reference float roughness":["myTex1:mag"]
+			"reference float roughness":["myTex1:mag"]
     }
     )
 	MetalSide(1.0)
@@ -360,18 +362,19 @@ def Table(posX, posY, posZ, rotX, rotY, rotZ, sc) :
 ri.WorldBegin()
 #All the geometry goes here vvv
 #vertAngle = -12.5
-vertAngle = -25.5
-horizAngle = -75
+vertAngle = -35.5
+horizAngle = -275
 #ri.Translate(0,0,9)
-ri.Translate(0,0.75,3.5)
+#ri.Translate(0,0.75,3.5)
+ri.Translate(0.5,0.75,8)
 ri.AttributeBegin()
 ri.Rotate(-95+vertAngle,1,0,0)
 ri.Rotate(5,1,0,0)
 ri.Rotate(70+horizAngle,0,0,1)
 ri.Light("PxrDomeLight", "holyLight",
 {
-"float exposure":[1],
-"string lightColorMap":["hdrTex.tx"]
+"float exposure":[0],
+"string lightColorMap":["hdrTex1.tx"]
 }
 )
 ri.AttributeEnd()
